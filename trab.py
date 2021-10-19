@@ -1,25 +1,24 @@
 # -*- coding: utf-8 -*-
+
+class NoArvore:
+    def __init__(self, chave=None, esquerda=None, direita=None):
+        self.chave = chave
+        self.esquerda = esquerda
+        self.direita = direita
+
+    def __repr__(self):
+        return '%s <- %s -> %s' % (self.esquerda and self.esquerda.chave,
+                                    self.chave,
+                                    self.direita and self.direita.chave)
+
 """
 Created on Mon Oct 18 17:48:34 2021
 
 @author: aleix
 """
 
-"""
-1.  While there are tokens to be read:
-2.        Read a token
-3.        If it's a number add it to queue
-4.        If it's an operator
-5.               While there's an operator on the top of the stack with greater precedence:
-6.                       Pop operators from the stack onto the output queue
-7.               Push the current operator onto the stack
-8.        If it's a left bracket push it onto the stack
-9.        If it's a right bracket 
-10.            While there's not a left bracket at the top of the stack:
-11.                     Pop operators from the stack onto the output queue.
-12.             Pop the left bracket from the stack and discard it
-13. While there are operators on the stack, pop them to the queue
-"""
+def precedencia(operador):
+    return 1 if operador == "+" or operador == "-" else 2 # 1 para mais e menos e 2 para outros
 
 # Lexer
 def tokensArray(string):
@@ -36,11 +35,33 @@ def tokensArray(string):
     # print(caracteres)
     return caracteres
     
-# Parser
+# Shunting-yard
 def expressionTree(lista):
-    print(lista)
-    return 0
+    ops = ["*", "/", "+", "-"]
+    listaOP = []
+    listaNum = []
+    for i in lista:
+        if i.isdigit():
+            listaNum.append(i)
+        if i in ops:
+            while len(listaOP) > 0 and precedencia(listaOP[len(listaOP)-1]) >= precedencia(i) and listaOP[len(listaOP)-1] != "(":
+                listaNum.append(listaOP.pop())
+            listaOP.append(i)
+        if i == "(":
+            listaOP.append(i)
+        if i == ")":
+            while len(listaOP) > 0 and listaOP[len(listaOP)-1] != "(":
+                listaNum.append(listaOP.pop())
+            listaOP.pop()
+            
+    while len(listaOP) > 0:
+        listaNum.append(listaOP.pop())
+
+    print(listaNum)
+    return listaNum
+
 
 expressao = "31 * (4 + 10)"
 listaToken = tokensArray(expressao.replace(" ", ""))
 expressionTree(listaToken)  
+
