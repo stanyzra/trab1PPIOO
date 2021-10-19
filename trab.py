@@ -33,7 +33,14 @@ def tokensArray(string):
                 caracteres.append(string[i-tamNum:i]) # append numeros, fazendo string[inicioNum, finalNum]
             caracteres.append(string[i:i+1]) # append operadores, fazendo string[inicioOP, finalOP]
             tamNum = 0 # reseta o tamanho do numero
-    print(caracteres)
+    # print(caracteres)
+    return caracteres
     
+# Parser
+def expressionTree(lista):
+    print(lista)
+    return 0
+
 expressao = "31 * (4 + 10)"
-tokensArray(expressao.replace(" ", ""))
+listaToken = tokensArray(expressao.replace(" ", ""))
+expressionTree(listaToken)  
