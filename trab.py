@@ -1,5 +1,11 @@
 # -*- coding: utf-8 -*-
 
+"""
+Created on Mon Oct 18 17:48:34 2021
+
+@author: aleix
+"""
+
 class NoArvore:
     def __init__(self, chave=None, esquerda=None, direita=None):
         self.chave = chave
@@ -11,12 +17,6 @@ class NoArvore:
                                     self.chave,
                                     self.direita and self.direita.chave)
 
-"""
-Created on Mon Oct 18 17:48:34 2021
-
-@author: aleix
-"""
-
 def precedencia(operador):
     return 1 if operador == "+" or operador == "-" else 2 # 1 para mais e menos e 2 para outros
 
@@ -24,19 +24,21 @@ def precedencia(operador):
 def tokensArray(string):
     caracteres = []
     tamNum = 0
-    for i in range(len(string)):   
+    for i in range(len(string)):
         if string[i].isdigit():
-            tamNum += 1 # pega o tamanho do número
+          if (i == len(string) - 1):
+            caracteres.append(string[i-tamNum:i+1])
+          tamNum += 1 # pega o tamanho do número
         else:
             if string[i-tamNum:i] != "": # pula os espaços vazios para números
                 caracteres.append(string[i-tamNum:i]) # append numeros, fazendo string[inicioNum, finalNum]
             caracteres.append(string[i:i+1]) # append operadores, fazendo string[inicioOP, finalOP]
             tamNum = 0 # reseta o tamanho do numero
-    # print(caracteres)
+    print(caracteres)
     return caracteres
     
 # Shunting-yard
-def expressionTree(lista):
+def RPN(lista):
     ops = ["*", "/", "+", "-"]
     listaOP = []
     listaNum = []
@@ -61,7 +63,8 @@ def expressionTree(lista):
     return listaNum
 
 
-expressao = "31 * (4 + 10)"
+expressao = "1 * 2 + ( 3 + ( 4 + 5 ) * 6) * 71"
+# print(expressao[10:11])
 listaToken = tokensArray(expressao.replace(" ", ""))
-expressionTree(listaToken)  
+RPN(listaToken)  
 
