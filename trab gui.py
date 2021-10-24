@@ -20,9 +20,6 @@ class Tree:
    def isRoot(self, node):
      return True if self.root == node else False
 
-   def isLeaf(self, node):
-     return True if node.right == None and node.left == None else False
-
    def getLastNode(self, root):
     expression = root
     if expression.data in ops:
@@ -32,26 +29,6 @@ class Tree:
     if root.right is not None:
             self.getLastNode(root.right) 
     return evalStep.lastNode
-    
-   def _printInfix(self, node, nextOp):
-    expression = node.data
-    atualOp = ""
-    if node.data in ops:
-      atualOp = node.data
-    if node.left is not None:
-            exp1 = self._printInfix(node.left, atualOp)
-            expression = exp1 + " " + expression
-    if node.right is not None:
-            exp2 = self._printInfix(node.right, atualOp)
-            expression = expression + " " + exp2
-  
-    for op in ops:
-      if expression.find(op) != -1:
-        if (precedencia(atualOp) < precedencia(nextOp)):
-          expression = "(" + expression + ")"
-        print(expression)
-        break
-    return expression
 
 def toString(tree, root, nextOp):
     expression = root.data
